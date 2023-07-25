@@ -1,14 +1,24 @@
+import decimal
+import os
 import uuid
 
-from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint, Float, Table, MetaData, UUID
-from sqlalchemy.ext.declarative import as_declarative
-from sqlalchemy.orm import relationship, DeclarativeBase, declarative_base
+from dotenv import load_dotenv
+from sqlalchemy import Column, String, ForeignKey, Numeric, DECIMAL
+from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects import postgresql
 
+load_dotenv()
+
+db_name = os.getenv('DB_NAME')
+db_user = os.getenv('DB_USER')
+db_password = os.getenv('DB_PASSWORD')
+db_url = os.getenv('DB_URL')
+db_port = os.getenv('DB_PORT')
+
 engine = create_engine(
-    'postgresql://postgres:12345@localhost:5432/restaurant',
+    f'postgresql://{db_user}:{db_password}@{db_url}:{db_port}/{db_name}',
     echo=True)
 
 Session = sessionmaker(bind=engine)
@@ -41,7 +51,7 @@ class Dish(Base):
     id = Column(postgresql.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String, nullable=False)
     description = Column(String, nullable=False)
-    price = Column(String, nullable=False)
+    price = Column(DECIMAL(precision=2), nullable=False)
     submenu_id = Column(postgresql.UUID(as_uuid=True), ForeignKey('submenus.id', ondelete='CASCADE'), nullable=False)
     submenu = relationship('Submenu', back_populates='dishes')
 

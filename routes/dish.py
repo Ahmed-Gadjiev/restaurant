@@ -38,7 +38,7 @@ async def create_dish(menu_id, submenu_id, body: DishModel):
         'id': new_dish.id,
         'title': new_dish.title,
         'description': new_dish.description,
-        'price': new_dish.price
+        'price': str(new_dish.price)
     }
 
 
@@ -49,7 +49,12 @@ async def get_dish(menu_id, submenu_id, dish_id):
     if dish is None:
         raise HTTPException(status_code=404, detail="dish not found")
 
-    return dish
+    return {
+        'id': dish.id,
+        'title': dish.title,
+        'description': dish.description,
+        'price': str(dish.price)
+    }
 
 
 @router.patch('/api/v1/menus/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}')
@@ -69,7 +74,7 @@ async def update_dish(menu_id, submenu_id, dish_id, body: DishModel):
         'id': dish.id,
         'title': dish.title,
         'description': dish.description,
-        'price': dish.price
+        'price': str(dish.price)
     }
 
 
