@@ -1,24 +1,14 @@
-import decimal
-import os
 import uuid
 
-from dotenv import load_dotenv
-from sqlalchemy import Column, String, ForeignKey, Numeric, DECIMAL
+from sqlalchemy import Column, String, ForeignKey, DECIMAL
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects import postgresql
 
-load_dotenv()
-
-db_name = os.getenv('DB_NAME')
-db_user = os.getenv('DB_USER')
-db_password = os.getenv('DB_PASSWORD')
-db_url = os.getenv('DB_URL')
-db_port = os.getenv('DB_PORT')
 
 engine = create_engine(
-    f'postgresql://{db_user}:{db_password}@{db_url}:{db_port}/{db_name}',
+    'postgresql://postgres:12345@postgres_db:5432/restaurant',
     echo=True)
 
 Session = sessionmaker(bind=engine)

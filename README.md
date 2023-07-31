@@ -1,17 +1,14 @@
-1. Создайте виртуальное окружение с помощью команды:
+1. Для запуска приложения последовательно выполните команды: 
    ```
-   python -m venv venv 
+   docker-compose build
+   docker-compose up -d
    ```
-2. Активируйте виртуально окружение: 
+   
+2. Для запуска тестов последовательно выполните команды:
    ```
-   .\venv\Scripts\activate
+   docker build -t tests_image -f .\Dockerfile-tests .
+   docker run --network restaurant_network -d tests_image
    ```
-2. Установите зависимости из файла requirements.txt:
-    ```
-   pip install -r requirements.txt
-   ```
-2. Создайте файл .env по шаблону .env.example
-3. Запустите сервер разработки:
-    ```
-   py -m uvicorn main:app --reload
-   ```
+   
+
+   
